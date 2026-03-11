@@ -7,6 +7,7 @@ import com.ajsoftware.fintrack.features.categories.domain.usecase.GetCategoriesU
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.AddTransactionUseCase
 import com.ajsoftware.fintrack.features.transactions.presentation.state.AddTransactionState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class AddTransactionViewModel @Inject constructor(
     private val addTransactionUseCase: AddTransactionUseCase,
     getCategoriesUseCase: GetCategoriesUseCase) : ViewModel() {
