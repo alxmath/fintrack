@@ -2,6 +2,7 @@ package com.ajsoftware.fintrack.core.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ajsoftware.fintrack.core.database.model.CategoryType
 
 @Entity(tableName = "categories")
 data class CategoryEntity(
@@ -11,7 +12,7 @@ data class CategoryEntity(
 
     val name: String,
 
-    val type: String, // INCOME ou EXPENSE
+    val type: CategoryType,
 
     val icon: String? = null,
 

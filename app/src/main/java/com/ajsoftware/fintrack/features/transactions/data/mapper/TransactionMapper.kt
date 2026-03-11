@@ -5,7 +5,7 @@ import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 
 fun TransactionEntity.toDomain(): Transaction {
     return Transaction(
-        id =id,
+        id = id,
         amount = amount,
         description = description,
         categoryId = categoryId,
@@ -14,9 +14,9 @@ fun TransactionEntity.toDomain(): Transaction {
     )
 }
 
-fun Transaction.toEntity(): TransactionEntity{
+fun Transaction.toEntity(): TransactionEntity {
     return TransactionEntity(
-        id =id,
+        id = id,
         amount = amount,
         description = description,
         categoryId = categoryId,

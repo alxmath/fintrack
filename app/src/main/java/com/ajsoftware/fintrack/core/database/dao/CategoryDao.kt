@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.CategoryEntity
+import com.ajsoftware.fintrack.core.database.model.CategoryType
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
@@ -21,8 +23,11 @@ interface CategoryDao {
     suspend fun delete(category: CategoryEntity)
 
     @Query("SELECT * FROM categories ORDER BY name")
-    suspend fun getAll(): List<CategoryEntity>
+    fun getAll(): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM categories WHERE type = :type")
-    suspend fun getByType(type: String): List<CategoryEntity>
+    suspend fun getByType(type: CategoryType): List<CategoryEntity>
+
+    @Query("SELECT COUNT(*) FROM categories")
+    suspend fun count(): Int
 }
