@@ -3,19 +3,31 @@ package com.ajsoftware.fintrack.features.transactions.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajsoftware.fintrack.core.model.TransactionType
+import com.ajsoftware.fintrack.features.categories.domain.usecase.GetCategoriesUseCase
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.AddTransactionUseCase
 import com.ajsoftware.fintrack.features.transactions.presentation.state.AddTransactionState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AddTransactionViewModel @Inject constructor(
-    private val addTransactionUseCase: AddTransactionUseCase) : ViewModel() {
+    private val addTransactionUseCase: AddTransactionUseCase,
+    getCategoriesUseCase: GetCategoriesUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(AddTransactionState())
     val state: StateFlow<AddTransactionState> = _state
+
+    val categories = getCategoriesUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     fun updateAmount(value: String) {
         _state.value = _state.value.copy(amount = value)

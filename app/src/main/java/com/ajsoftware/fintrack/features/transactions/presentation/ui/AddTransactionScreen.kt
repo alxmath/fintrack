@@ -1,12 +1,33 @@
 package com.ajsoftware.fintrack.features.transactions.presentation.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajsoftware.fintrack.core.model.TransactionType
+import com.ajsoftware.fintrack.features.categories.domain.model.Category
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.AddTransactionViewModel
 
 @Composable
@@ -15,11 +36,12 @@ fun AddTransactionScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+    val categories by viewModel.categories.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
 
         Text(
@@ -28,6 +50,12 @@ fun AddTransactionScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        CategoryDropdown(
+            categories = categories,
+            selectedCategoryId = state.selectedCategoryId,
+            onCategorySelected = { viewModel.updateCategory(it) }
+        )
 
         OutlinedTextField(
             value = state.amount,
@@ -73,6 +101,55 @@ fun AddTransactionScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Salvar")
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryDropdown(
+    categories: List<Category>,
+    selectedCategoryId: Long?,
+    onCategorySelected: (Long) -> Unit
+) {
+
+    var expanded by remember { mutableStateOf(false) }
+
+    val selectedCategory = categories.find { it.id == selectedCategoryId }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+
+        OutlinedTextField(
+            value = selectedCategory?.name ?: "Selecionar categoria",
+            onValueChange = {},
+            readOnly = true,
+            label = { Text("Categoria") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+            },
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+
+            categories.forEach { category ->
+
+                DropdownMenuItem(
+                    text = { Text(category.name) },
+                    onClick = {
+                        onCategorySelected(category.id)
+                        expanded = false
+                    }
+                )
+            }
         }
     }
 }
