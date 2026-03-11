@@ -51,9 +51,17 @@ class AddTransactionViewModel @Inject constructor(
 
         val state = _state.value
 
-        val categoryId = state.selectedCategoryId ?: return
+        val categoryId = state.selectedCategoryId ?: run {
+            _state.value = state.copy(error = "Selecione uma categoria")
+            return
+        }
 
-        val amount = state.amount.toDoubleOrNull() ?: return
+        val amount = state.amount
+            .replace(",", ".")
+            .toDoubleOrNull() ?: run {
+            _state.value = state.copy(error = "Valor inválido")
+            return
+        }
 
         val transaction = Transaction(
             id = 0,
@@ -65,7 +73,19 @@ class AddTransactionViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            addTransactionUseCase(transaction)
+
+            try {
+
+                addTransactionUseCase(transaction)
+
+            } catch (e: Exception) {
+
+                _state.value = state.copy(
+                    error = "Erro ao salvar transação"
+                )
+
+            }
+
         }
     }
 }

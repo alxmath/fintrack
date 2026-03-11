@@ -7,4 +7,5 @@ data class AddTransactionState(
     val description: String = "",
     val selectedType: TransactionType = TransactionType.EXPENSE,
     val selectedCategoryId: Long? = null,
+    val error: String? = null
 )
