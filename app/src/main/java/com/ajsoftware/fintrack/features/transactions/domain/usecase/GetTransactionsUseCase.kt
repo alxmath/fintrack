@@ -2,12 +2,14 @@ package com.ajsoftware.fintrack.features.transactions.domain.usecase
 
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.domain.repository.TransactionRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTransactionsUseCase @Inject constructor(
-    private val repository: TransactionRepository) {
+    private val repository: TransactionRepository
+) {
 
-    suspend operator fun invoke(): List<Transaction>{
+    operator fun invoke(): Flow<List<Transaction>> {
         return repository.getAll()
     }
 }

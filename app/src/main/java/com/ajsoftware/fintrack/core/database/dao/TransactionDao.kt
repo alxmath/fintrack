@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.TransactionEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
@@ -18,10 +19,10 @@ interface TransactionDao {
     suspend fun update(transaction: TransactionEntity)
 
     @Delete
-    suspend fun  delete(transaction: TransactionEntity)
+    suspend fun delete(transaction: TransactionEntity)
 
     @Query("SELECT * FROM transactions ORDER BY date DESC")
-    suspend fun getAll(): List<TransactionEntity>
+    fun getAll(): Flow<List<TransactionEntity>>
 
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: Long): TransactionEntity?
