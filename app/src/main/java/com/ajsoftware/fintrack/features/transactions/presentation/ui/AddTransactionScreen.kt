@@ -102,6 +102,17 @@ fun AddTransactionScreen(
         ) {
             Text("Salvar")
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        state.error?.let {
+
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error
+            )
+
+        }
     }
 }
 
