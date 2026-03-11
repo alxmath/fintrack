@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.CategoryEntity
-import com.ajsoftware.fintrack.core.database.model.CategoryType
+import com.ajsoftware.fintrack.core.model.CategoryType
 import kotlinx.coroutines.flow.Flow
 
 @Dao

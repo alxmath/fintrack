@@ -1,6 +1,6 @@
 package com.ajsoftware.fintrack.features.categories.domain.model
 
-import com.ajsoftware.fintrack.core.database.model.CategoryType
+import com.ajsoftware.fintrack.core.model.CategoryType
 
 data class Category(
     val id: Long,

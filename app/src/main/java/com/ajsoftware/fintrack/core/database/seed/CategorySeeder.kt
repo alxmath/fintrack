@@ -2,7 +2,7 @@ package com.ajsoftware.fintrack.core.database.seed
 
 import com.ajsoftware.fintrack.core.database.dao.CategoryDao
 import com.ajsoftware.fintrack.core.database.entity.CategoryEntity
-import com.ajsoftware.fintrack.core.database.model.CategoryType
+import com.ajsoftware.fintrack.core.model.CategoryType
 import javax.inject.Inject
 
 class CategorySeeder @Inject constructor(

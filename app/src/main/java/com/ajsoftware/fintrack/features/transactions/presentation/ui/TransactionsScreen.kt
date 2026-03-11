@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ajsoftware.fintrack.core.model.TransactionType
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsViewModel
 
@@ -38,7 +39,7 @@ fun TransactionsScreen(
                     amount = 50.0,
                     description = "Teste",
                     categoryId = 1,
-                    type = "EXPENSE",
+                    type = TransactionType.EXPENSE,
                     date = System.currentTimeMillis()
                 )
                 viewModel.add(transaction)

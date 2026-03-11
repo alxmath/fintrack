@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.TransactionEntity
+import com.ajsoftware.fintrack.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -35,4 +36,18 @@ interface TransactionDao {
         """
     )
     suspend fun getByPeriod(start: Long, end: Long): List<TransactionEntity>
+
+    @Query(
+        """
+            SELECT SUM(amount) FROM transactions WHERE type = :type
+        """
+    )
+    fun getTotalByType(type: TransactionType): Flow<Double?>
+
+    @Query(
+        """
+            SELECT SUM(amount) FROM transactions
+        """
+    )
+    fun getTotal(): Flow<Double?>
 }

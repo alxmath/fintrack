@@ -1,6 +1,7 @@
 package com.ajsoftware.fintrack.features.transactions.data.repository
 
 import com.ajsoftware.fintrack.core.database.dao.TransactionDao
+import com.ajsoftware.fintrack.core.model.TransactionType
 import com.ajsoftware.fintrack.features.transactions.data.mapper.toDomain
 import com.ajsoftware.fintrack.features.transactions.data.mapper.toEntity
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
@@ -33,5 +34,9 @@ class TransactionRepositoryImpl @Inject constructor(
 
     override suspend fun getById(id: Long): Transaction? {
         return transactionDao.getById(id)?.toDomain()
+    }
+
+    override fun getTotalByType(type: TransactionType): Flow<Double?> {
+        return transactionDao.getTotalByType(type)
     }
 }

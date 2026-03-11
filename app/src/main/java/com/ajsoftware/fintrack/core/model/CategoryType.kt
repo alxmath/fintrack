@@ -1,4 +1,4 @@
-package com.ajsoftware.fintrack.core.database.model
+package com.ajsoftware.fintrack.core.model
 
 enum class CategoryType {
     INCOME,

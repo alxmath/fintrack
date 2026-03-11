@@ -1,7 +1,7 @@
 package com.ajsoftware.fintrack.core.database.converter
 
 import androidx.room.TypeConverter
-import com.ajsoftware.fintrack.core.database.model.CategoryType
+import com.ajsoftware.fintrack.core.model.CategoryType
 
 class CategoryTypeConverter {
 

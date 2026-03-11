@@ -2,7 +2,7 @@ package com.ajsoftware.fintrack.core.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ajsoftware.fintrack.core.database.model.CategoryType
+import com.ajsoftware.fintrack.core.model.CategoryType
 
 @Entity(tableName = "categories")
 data class CategoryEntity(

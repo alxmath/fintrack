@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.ajsoftware.fintrack.core.model.TransactionType
 
 @Entity(
     tableName = "transactions",
@@ -28,7 +29,7 @@ data class TransactionEntity(
 
     val categoryId: Long,
 
-    val type: String, // INCOME ou EXPENSE
+    val type: TransactionType,
 
     val date: Long
 )
