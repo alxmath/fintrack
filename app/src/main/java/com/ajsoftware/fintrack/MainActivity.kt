@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import com.ajsoftware.fintrack.core.database.seed.CategorySeeder
-import com.ajsoftware.fintrack.core.navigation.FinTrackNavGraph
+import com.ajsoftware.fintrack.core.navigation.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            FinTrackNavGraph()
+            MainScreen()
         }
     }
 }

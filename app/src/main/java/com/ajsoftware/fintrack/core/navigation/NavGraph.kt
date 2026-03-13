@@ -25,8 +25,9 @@ fun FinTrackNavGraph(
     var showMessage by remember { mutableStateOf(false) }
 
     NavHost(
-        navController = navController,
-        startDestination = Routes.TRANSACTIONS
+       navController = navController,
+        startDestination = Routes.DASHBOARD,
+        modifier = modifier
     ) {
 
         composable(Routes.DASHBOARD) {
