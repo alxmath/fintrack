@@ -15,10 +15,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,12 +33,30 @@ import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.Tran
 @Composable
 fun TransactionsScreen(
     onAddTransaction: () -> Unit,
+    showTransactionSavedMessage: Boolean,
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
 
     val transactions by viewModel.transactions.collectAsState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(showTransactionSavedMessage) {
+
+        if (showTransactionSavedMessage) {
+
+            snackbarHostState.showSnackbar(
+                message = "Transação salva com sucesso"
+            )
+
+        }
+    }
+
     Scaffold(
+
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
 
         floatingActionButton = {
 

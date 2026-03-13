@@ -1,6 +1,10 @@
 package com.ajsoftware.fintrack.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,6 +16,8 @@ fun FinTrackNavGraph() {
 
     val navController = rememberNavController()
 
+    var showMessage by remember { mutableStateOf(false) }
+
     NavHost(
         navController = navController,
         startDestination = Routes.TRANSACTIONS
@@ -20,6 +26,7 @@ fun FinTrackNavGraph() {
         composable(Routes.TRANSACTIONS) {
 
             TransactionsScreen(
+                showTransactionSavedMessage = showMessage,
                 onAddTransaction = {
                     navController.navigate(Routes.ADD_TRANSACTION)
                 }
@@ -31,11 +38,13 @@ fun FinTrackNavGraph() {
             AddTransactionScreen(
 
                 onTransactionSaved = {
+
+                    showMessage = true
                     navController.popBackStack()
+
                 }
 
             )
-
         }
     }
 }

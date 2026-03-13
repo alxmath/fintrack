@@ -16,6 +16,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,85 +51,89 @@ fun AddTransactionScreen(
                 AddTransactionEvent.TransactionSaved -> {
                     onTransactionSaved()
                 }
-
             }
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-    ) {
+    Scaffold(
+    ) { padding ->
 
-        Text(
-            text = "Nova Transação",
-            style = MaterialTheme.typography.headlineSmall
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        CategoryDropdown(
-            categories = categories,
-            selectedCategoryId = state.selectedCategoryId,
-            onCategorySelected = { viewModel.updateCategory(it) }
-        )
-
-        OutlinedTextField(
-            value = state.amount,
-            onValueChange = { viewModel.updateAmount(it) },
-            label = { Text("Valor") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = state.description,
-            onValueChange = { viewModel.updateDescription(it) },
-            label = { Text("Descrição") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("Tipo")
-
-        Row {
-
-            FilterChip(
-                selected = state.selectedType == TransactionType.EXPENSE,
-                onClick = { viewModel.updateType(TransactionType.EXPENSE) },
-                label = { Text("Despesa") }
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            FilterChip(
-                selected = state.selectedType == TransactionType.INCOME,
-                onClick = { viewModel.updateType(TransactionType.INCOME) },
-                label = { Text("Receita") }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = { viewModel.save() },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Text("Salvar")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        state.error?.let {
 
             Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error
+                text = "Nova Transação",
+                style = MaterialTheme.typography.headlineSmall
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CategoryDropdown(
+                categories = categories,
+                selectedCategoryId = state.selectedCategoryId,
+                onCategorySelected = { viewModel.updateCategory(it) }
+            )
+
+            OutlinedTextField(
+                value = state.amount,
+                onValueChange = { viewModel.updateAmount(it) },
+                label = { Text("Valor") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = state.description,
+                onValueChange = { viewModel.updateDescription(it) },
+                label = { Text("Descrição") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text("Tipo")
+
+            Row {
+
+                FilterChip(
+                    selected = state.selectedType == TransactionType.EXPENSE,
+                    onClick = { viewModel.updateType(TransactionType.EXPENSE) },
+                    label = { Text("Despesa") }
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                FilterChip(
+                    selected = state.selectedType == TransactionType.INCOME,
+                    onClick = { viewModel.updateType(TransactionType.INCOME) },
+                    label = { Text("Receita") }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { viewModel.save() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Salvar")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            state.error?.let {
+
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+            }
         }
     }
 }
