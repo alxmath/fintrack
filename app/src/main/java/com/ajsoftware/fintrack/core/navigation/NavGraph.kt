@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ajsoftware.fintrack.features.transactions.presentation.ui.AddTransactionScreen
+import com.ajsoftware.fintrack.features.transactions.presentation.ui.DashboardScreen
 import com.ajsoftware.fintrack.features.transactions.presentation.ui.TransactionsScreen
 
 @Composable
@@ -22,6 +23,15 @@ fun FinTrackNavGraph() {
         navController = navController,
         startDestination = Routes.TRANSACTIONS
     ) {
+
+        composable(Routes.DASHBOARD) {
+
+            DashboardScreen(
+                onAddTransactionClick = {
+                    navController.navigate(Routes.ADD_TRANSACTION)
+                }
+            )
+        }
 
         composable(Routes.TRANSACTIONS) {
 
