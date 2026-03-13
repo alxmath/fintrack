@@ -1,7 +1,13 @@
 package com.ajsoftware.fintrack.features.transactions.presentation.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,10 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
+import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsViewModel
 
 @Composable
@@ -24,6 +31,7 @@ fun TransactionsScreen(
     onAddTransaction: () -> Unit,
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
+
     val transactions by viewModel.transactions.collectAsState()
 
     Scaffold(
@@ -40,39 +48,95 @@ fun TransactionsScreen(
 
     ) { padding ->
 
-        LazyColumn(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-        ) {
+        if (transactions.isEmpty()) {
 
-            items(transactions) { transaction ->
-                TransactionItem(transaction)
+            EmptyTransactions()
+
+        } else {
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+
+                items(
+                    items = transactions,
+                    key = { it.id }
+                ) { transaction ->
+
+                    TransactionItem(transaction)
+
+                }
+
             }
-
         }
     }
 }
 
 @Composable
-fun TransactionItem(transaction: Transaction) {
+fun TransactionItem(transaction: TransactionUi) {
+
     Card(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(bottom = 8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+
+            Column {
+
+                Text(
+                    text = transaction.description ?: "Sem descrição",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    text = transaction.categoryName,
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+            }
+
             Text(
-                text = transaction.description ?: "Sem descrição",
+                text = "R$ %.2f".format(transaction.amount),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun EmptyTransactions() {
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = "Nenhuma transação ainda",
                 style = MaterialTheme.typography.titleMedium
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
-                text = "Valor: ${transaction.amount}",
+                text = "Toque no botão + para adicionar",
                 style = MaterialTheme.typography.bodyMedium
             )
+
         }
     }
 }
