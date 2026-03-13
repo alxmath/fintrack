@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,15 +29,31 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajsoftware.fintrack.core.model.TransactionType
 import com.ajsoftware.fintrack.features.categories.domain.model.Category
+import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.AddTransactionEvent
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.AddTransactionViewModel
 
 @Composable
 fun AddTransactionScreen(
+    onTransactionSaved: () -> Unit,
     viewModel: AddTransactionViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()
     val categories by viewModel.categories.collectAsState()
+
+    LaunchedEffect(Unit) {
+
+        viewModel.events.collect { event ->
+
+            when (event) {
+
+                AddTransactionEvent.TransactionSaved -> {
+                    onTransactionSaved()
+                }
+
+            }
+        }
+    }
 
     Column(
         modifier = Modifier

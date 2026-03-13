@@ -8,10 +8,12 @@ import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.AddTransactionUseCase
 import com.ajsoftware.fintrack.features.transactions.presentation.state.AddTransactionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +32,9 @@ class AddTransactionViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
+
+    private val _events = MutableSharedFlow<AddTransactionEvent>()
+    val events = _events.asSharedFlow()
 
     fun updateAmount(value: String) {
         _state.value = _state.value.copy(amount = value)
@@ -78,6 +83,8 @@ class AddTransactionViewModel @Inject constructor(
 
                 addTransactionUseCase(transaction)
 
+                _events.emit(AddTransactionEvent.TransactionSaved)
+
             } catch (e: Exception) {
 
                 _state.value = state.copy(
@@ -88,4 +95,10 @@ class AddTransactionViewModel @Inject constructor(
 
         }
     }
+}
+
+sealed class AddTransactionEvent {
+
+    object TransactionSaved : AddTransactionEvent()
+
 }
