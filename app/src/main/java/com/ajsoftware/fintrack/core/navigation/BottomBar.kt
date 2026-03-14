@@ -23,10 +23,7 @@ fun BottomBar(
             NavigationBarItem(
                 selected = currentRoute == item.route,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(Routes.DASHBOARD)
-                        launchSingleTop = true
-                    }
+                    navController.navigate(item.route)
                 },
                 icon = {
                     Icon(

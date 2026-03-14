@@ -13,13 +13,13 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController)
+            BottomBar(navController = navController)
         }
-    ) { padding ->
+    ) { paddingValues ->
 
         FinTrackNavGraph(
             navController = navController,
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(paddingValues)
         )
     }
 }

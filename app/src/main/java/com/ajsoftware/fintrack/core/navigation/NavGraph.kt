@@ -20,12 +20,10 @@ fun FinTrackNavGraph(
     modifier: Modifier = Modifier
 ) {
 
-    val navController = rememberNavController()
-
     var showMessage by remember { mutableStateOf(false) }
 
     NavHost(
-       navController = navController,
+        navController = navController,
         startDestination = Routes.DASHBOARD,
         modifier = modifier
     ) {
@@ -52,14 +50,12 @@ fun FinTrackNavGraph(
         composable(Routes.ADD_TRANSACTION) {
 
             AddTransactionScreen(
-
                 onTransactionSaved = {
 
                     showMessage = true
                     navController.popBackStack()
 
                 }
-
             )
         }
     }
