@@ -51,6 +51,10 @@ fun AddTransactionScreen(
                 AddTransactionEvent.TransactionSaved -> {
                     onTransactionSaved()
                 }
+
+                is AddTransactionEvent.Error -> {
+                    // tratar erro
+                }
             }
         }
     }

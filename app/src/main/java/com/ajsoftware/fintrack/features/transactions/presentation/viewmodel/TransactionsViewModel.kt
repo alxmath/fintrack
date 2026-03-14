@@ -8,7 +8,9 @@ import com.ajsoftware.fintrack.features.transactions.domain.usecase.DeleteTransa
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.GetTransactionsUseCase
 import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,6 +22,9 @@ class TransactionsViewModel @Inject constructor(
     getTransactions: GetTransactionsUseCase,
     private val deleteTransaction: DeleteTransactionUseCase
 ) : ViewModel() {
+
+    private val _events = MutableSharedFlow<TransactionsEvent>()
+    val events = _events.asSharedFlow()
 
     val transactions = getTransactions()
         .map { transactions ->
@@ -54,5 +59,13 @@ class TransactionsViewModel @Inject constructor(
         viewModelScope.launch {
             deleteTransaction(transaction)
         }
+    }
+
+    fun notifyTransactionSaved() {
+
+        viewModelScope.launch {
+            _events.emit(TransactionsEvent.TransactionSaved)
+        }
+
     }
 }

@@ -28,12 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
+import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsEvent
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsViewModel
 
 @Composable
 fun TransactionsScreen(
     onAddTransaction: () -> Unit,
-    showTransactionSavedMessage: Boolean,
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
 
@@ -41,15 +41,24 @@ fun TransactionsScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(showTransactionSavedMessage) {
+    LaunchedEffect(Unit) {
 
-        if (showTransactionSavedMessage) {
+        viewModel.events.collect { event ->
 
-            snackbarHostState.showSnackbar(
-                message = "Transação salva com sucesso"
-            )
+            when (event) {
+
+                TransactionsEvent.TransactionSaved -> {
+
+                    snackbarHostState.showSnackbar(
+                        message = "Transação salva com sucesso"
+                    )
+
+                }
+
+            }
 
         }
+
     }
 
     Scaffold(
