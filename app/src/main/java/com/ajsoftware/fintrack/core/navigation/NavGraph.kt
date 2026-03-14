@@ -38,6 +38,7 @@ fun FinTrackNavGraph(
         composable(Routes.TRANSACTIONS) {
 
             TransactionsScreen(
+                navController = navController,
                 onAddTransaction = {
                     navController.navigate(Routes.ADD_TRANSACTION)
                 }
@@ -48,7 +49,13 @@ fun FinTrackNavGraph(
 
             AddTransactionScreen(
                 onTransactionSaved = {
+
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("transaction_saved", true)
+
                     navController.popBackStack()
+
                 }
             )
         }

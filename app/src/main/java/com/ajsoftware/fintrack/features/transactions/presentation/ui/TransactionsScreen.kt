@@ -27,12 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsEvent
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsViewModel
 
 @Composable
 fun TransactionsScreen(
+    navController: NavHostController,
     onAddTransaction: () -> Unit,
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
@@ -41,21 +43,41 @@ fun TransactionsScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
+    val savedStateHandle =
+        navController.currentBackStackEntry?.savedStateHandle
 
-        viewModel.events.collect { event ->
+    val transactionSaved =
+        savedStateHandle?.get<Boolean>("transaction_saved") ?: false
 
-            when (event) {
+//    LaunchedEffect(Unit) {
+//
+//        viewModel.events.collect { event ->
+//
+//            when (event) {
+//
+//                TransactionsEvent.TransactionSaved -> {
+//
+//                    snackbarHostState.showSnackbar(
+//                        message = "Transação salva com sucesso"
+//                    )
+//
+//                }
+//
+//            }
+//
+//        }
+//
+//    }
 
-                TransactionsEvent.TransactionSaved -> {
+    LaunchedEffect(transactionSaved) {
 
-                    snackbarHostState.showSnackbar(
-                        message = "Transação salva com sucesso"
-                    )
+        if (transactionSaved) {
 
-                }
+            snackbarHostState.showSnackbar(
+                message = "Transação salva com sucesso"
+            )
 
-            }
+            savedStateHandle["transaction_saved"] = false
 
         }
 
