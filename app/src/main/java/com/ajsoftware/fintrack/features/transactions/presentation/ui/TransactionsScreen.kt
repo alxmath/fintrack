@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -28,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.ajsoftware.fintrack.core.utils.formatCurrency
 import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsEvent
 import com.ajsoftware.fintrack.features.transactions.presentation.viewmodel.TransactionsViewModel
@@ -48,26 +52,6 @@ fun TransactionsScreen(
 
     val transactionSaved =
         savedStateHandle?.get<Boolean>("transaction_saved") ?: false
-
-//    LaunchedEffect(Unit) {
-//
-//        viewModel.events.collect { event ->
-//
-//            when (event) {
-//
-//                TransactionsEvent.TransactionSaved -> {
-//
-//                    snackbarHostState.showSnackbar(
-//                        message = "Transação salva com sucesso"
-//                    )
-//
-//                }
-//
-//            }
-//
-//        }
-//
-//    }
 
     LaunchedEffect(transactionSaved) {
 
@@ -94,7 +78,10 @@ fun TransactionsScreen(
             FloatingActionButton(
                 onClick = onAddTransaction
             ) {
-                Text("+")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Adicionar transação"
+                )
             }
 
         }
@@ -107,6 +94,8 @@ fun TransactionsScreen(
 
         } else {
 
+            val items = remember(transactions) { transactions }
+
             LazyColumn(
                 modifier = Modifier
                     .padding(padding)
@@ -115,7 +104,7 @@ fun TransactionsScreen(
             ) {
 
                 items(
-                    items = transactions,
+                    items = items,
                     key = { it.id }
                 ) { transaction ->
 
@@ -159,7 +148,7 @@ fun TransactionItem(transaction: TransactionUi) {
             }
 
             Text(
-                text = "R$ %.2f".format(transaction.amount),
+                text = formatCurrency(transaction.amount),
                 style = MaterialTheme.typography.titleMedium
             )
         }
