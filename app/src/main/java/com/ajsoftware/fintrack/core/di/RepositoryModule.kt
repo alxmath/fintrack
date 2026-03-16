@@ -1,6 +1,8 @@
 package com.ajsoftware.fintrack.core.di
 
 import com.ajsoftware.fintrack.features.categories.domain.repository.CategoryRepository
+import com.ajsoftware.fintrack.features.reports.data.repository.ReportsRepositoryImpl
+import com.ajsoftware.fintrack.features.reports.domain.repository.ReportsRepository
 import com.ajsoftware.fintrack.features.transactions.data.repository.CategoryRepositoryImpl
 import com.ajsoftware.fintrack.features.transactions.data.repository.TransactionRepositoryImpl
 import com.ajsoftware.fintrack.features.transactions.domain.repository.TransactionRepository
@@ -25,4 +27,9 @@ abstract class RepositoryModule {
     abstract fun bindCategoryRepository(
         repositoryImpl: CategoryRepositoryImpl
     ): CategoryRepository
+
+    @Binds
+    abstract fun bindReportsRepository(
+        impl: ReportsRepositoryImpl
+    ): ReportsRepository
 }
