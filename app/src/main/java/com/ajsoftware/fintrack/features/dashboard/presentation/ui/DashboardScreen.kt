@@ -1,8 +1,11 @@
 package com.ajsoftware.fintrack.features.dashboard.presentation.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -12,9 +15,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,7 +30,8 @@ import com.ajsoftware.fintrack.features.transactions.presentation.ui.Transaction
 @Composable
 fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
-    onAddTransactionClick: () -> Unit
+    onAddTransactionClick: () -> Unit,
+    onSeeAllTransactionsClick: () -> Unit
 ) {
 
     val summary by viewModel.summary.collectAsState()
@@ -58,10 +64,24 @@ fun DashboardScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                text = "Últimas transações",
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(
+                    text = "Últimas transações",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                TextButton(
+                    onClick = onSeeAllTransactionsClick
+                ) {
+                    Text("Ver todas")
+                }
+
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 

@@ -26,6 +26,9 @@ fun FinTrackNavGraph(
             DashboardScreen(
                 onAddTransactionClick = {
                     navController.navigate(Routes.ADD_TRANSACTION)
+                },
+                onSeeAllTransactionsClick = {
+                    navController.navigate(Routes.TRANSACTIONS)
                 }
             )
         }
