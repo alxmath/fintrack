@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.TransactionEntity
 import com.ajsoftware.fintrack.core.model.TransactionType
+import com.ajsoftware.fintrack.features.reports.domain.model.CategoryExpense
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -50,4 +51,14 @@ interface TransactionDao {
         """
     )
     fun getTotal(): Flow<Double?>
+
+    @Query("""
+        SELECT c.name as categoryName, SUM(t.amount) as total
+        FROM transactions t
+        JOIN categories c ON c.id = t.categoryId
+        WHERE t.type = 'EXPENSE'
+        GROUP BY t.categoryId
+        ORDER BY total DESC
+    """)
+    fun getExpensesByCategory(): Flow<List<CategoryExpense>>
 }
