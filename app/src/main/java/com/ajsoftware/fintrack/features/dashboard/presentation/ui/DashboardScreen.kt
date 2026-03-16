@@ -23,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ajsoftware.fintrack.core.ui.components.FinTrackSectionTitle
+import com.ajsoftware.fintrack.core.ui.components.FinTrackSpacer
 import com.ajsoftware.fintrack.core.ui.components.TransactionItem
 import com.ajsoftware.fintrack.features.dashboard.presentation.viewmodel.DashboardViewModel
 import com.ajsoftware.fintrack.features.transactions.presentation.ui.components.FinancialSummaryCard
@@ -62,7 +64,7 @@ fun DashboardScreen(
                 summary = summary
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            FinTrackSpacer()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -70,10 +72,7 @@ fun DashboardScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Text(
-                    text = "Últimas transações",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                FinTrackSectionTitle("Últimas transações")
 
                 TextButton(
                     onClick = onSeeAllTransactionsClick

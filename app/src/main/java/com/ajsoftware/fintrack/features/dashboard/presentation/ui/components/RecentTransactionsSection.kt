@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ajsoftware.fintrack.core.ui.components.TransactionItem
 import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
-import com.ajsoftware.fintrack.features.transactions.presentation.ui.TransactionItem
 import kotlin.collections.take
 
 @Composable
