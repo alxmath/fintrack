@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ajsoftware.fintrack.features.transactions.presentation.ui.AddTransactionScreen
 import com.ajsoftware.fintrack.features.dashboard.presentation.ui.DashboardScreen
+import com.ajsoftware.fintrack.features.reports.presentation.ui.ReportsScreen
 import com.ajsoftware.fintrack.features.transactions.presentation.ui.TransactionsScreen
 
 @Composable
@@ -56,6 +57,10 @@ fun FinTrackNavGraph(
 
                 }
             )
+        }
+
+        composable(Routes.REPORTS) {
+            ReportsScreen()
         }
     }
 }
