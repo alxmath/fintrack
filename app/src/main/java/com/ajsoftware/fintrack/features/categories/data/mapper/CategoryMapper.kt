@@ -18,6 +18,7 @@ fun Category.toEntity(): CategoryEntity {
         id = id,
         name = name,
         type = type,
-        icon = icon
+        icon = icon,
+        color = color
     )
 }

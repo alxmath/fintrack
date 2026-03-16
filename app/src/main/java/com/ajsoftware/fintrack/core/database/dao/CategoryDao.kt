@@ -25,8 +25,8 @@ interface CategoryDao {
     @Query("SELECT * FROM categories ORDER BY name")
     fun getAll(): Flow<List<CategoryEntity>>
 
-    @Query("SELECT * FROM categories WHERE type = :type")
-    suspend fun getByType(type: CategoryType): List<CategoryEntity>
+    @Query("SELECT * FROM categories WHERE type = :type ORDER BY name")
+    fun getByType(type: CategoryType): Flow<List<CategoryEntity>>
 
     @Query("SELECT COUNT(*) FROM categories")
     suspend fun count(): Int

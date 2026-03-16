@@ -1,8 +1,8 @@
 package com.ajsoftware.fintrack.features.categories.data.repository
 
 import com.ajsoftware.fintrack.core.database.dao.CategoryDao
-import com.ajsoftware.fintrack.features.categories.data.mapper.toEntity
 import com.ajsoftware.fintrack.features.categories.data.mapper.toDomain
+import com.ajsoftware.fintrack.features.categories.data.mapper.toEntity
 import com.ajsoftware.fintrack.features.categories.domain.model.Category
 import com.ajsoftware.fintrack.features.categories.domain.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
