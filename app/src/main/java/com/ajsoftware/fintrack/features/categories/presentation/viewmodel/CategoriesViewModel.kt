@@ -37,11 +37,11 @@ class CategoriesViewModel @Inject constructor(
                     )
                 }
             }
-            .catch {
-                _uiState.update {
-                    it.copy(
+            .catch { throwable ->
+                _uiState.update { state ->
+                    state.copy(
                         isLoading = false,
-                        error = it.message
+                        error = throwable.message ?: "Erro ao carregar categorias"
                     )
                 }
             }
