@@ -14,39 +14,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    getCategoriesUseCase: GetCategoriesUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CategoriesUiState(isLoading = true))
-    val uiState: StateFlow<CategoriesUiState> = _uiState.asStateFlow()
-
-    init {
-        observeCategories()
-    }
-
-    private fun observeCategories() {
+    val uiState: StateFlow<CategoriesUiState> =
         getCategoriesUseCase()
-            .onEach { categories ->
-                _uiState.update {
-                    it.copy(
-                        categories = categories,
-                        isLoading = false,
-                        error = null
-                    )
-                }
+            .map { categories ->
+                CategoriesUiState(
+                    categories = categories,
+                    isLoading = false
+                )
             }
             .catch { throwable ->
-                _uiState.update { state ->
-                    state.copy(
-                        isLoading = false,
+                emit(
+                    CategoriesUiState(
                         error = throwable.message ?: "Erro ao carregar categorias"
                     )
-                }
+                )
             }
-            .launchIn(viewModelScope)
-    }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = CategoriesUiState(isLoading = true)
+            )
 
     fun addCategory(category: Category) {
         viewModelScope.launch {
