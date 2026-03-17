@@ -31,6 +31,8 @@ class DashboardViewModel @Inject constructor(
                     description = transaction.description,
                     amount = transaction.amount,
                     categoryName = "Categoria", // temporário
+                    categoryIcon = null,
+                    categoryColor = null,
                     type = transaction.type,
                     date = transaction.date
                 )
