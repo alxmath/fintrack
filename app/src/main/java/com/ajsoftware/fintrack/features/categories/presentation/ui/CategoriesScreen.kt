@@ -1,6 +1,7 @@
 package com.ajsoftware.fintrack.features.categories.presentation.ui
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ajsoftware.fintrack.features.categories.presentation.components.CategoryItem
 import com.ajsoftware.fintrack.features.categories.presentation.viewmodel.CategoriesViewModel
 
 @Composable
@@ -43,7 +45,10 @@ fun CategoriesScreen(
                 key = { it.id }
             ) { category ->
 
-                CategoryItem(category)
+                CategoryItem(
+                    category = category,
+                    onDelete = { viewModel.deleteCategory(it) }
+                )
 
             }
 
