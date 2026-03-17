@@ -19,11 +19,11 @@ fun FinTrackNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Routes.DASHBOARD,
+        startDestination = Route.Dashboard.route,
         modifier = modifier
     ) {
 
-        composable(Routes.DASHBOARD) {
+        composable(Route.Dashboard.route) {
 
             DashboardScreen(
                 onAddTransactionClick = {
@@ -35,7 +35,7 @@ fun FinTrackNavGraph(
             )
         }
 
-        composable(Routes.TRANSACTIONS) {
+        composable(Route.Transactions.route) {
 
             TransactionsScreen(
                 navController = navController,
@@ -45,7 +45,7 @@ fun FinTrackNavGraph(
             )
         }
 
-        composable(Routes.ADD_TRANSACTION) {
+        composable(Route.AddTransaction.route) {
 
             AddTransactionScreen(
                 onTransactionSaved = {
@@ -60,11 +60,11 @@ fun FinTrackNavGraph(
             )
         }
 
-        composable(Routes.REPORTS) {
+        composable(Route.Reports.route) {
             ReportsScreen()
         }
 
-        composable(Routes.CATEGORIES) {
+        composable(Route.Categories.route) {
             CategoriesScreen()
         }
     }

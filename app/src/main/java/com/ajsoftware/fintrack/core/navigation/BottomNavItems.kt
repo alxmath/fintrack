@@ -10,22 +10,22 @@ object BottomNavItems {
 
     val items = listOf(
         BottomNavItem(
-            route = Routes.DASHBOARD,
+            route = Route.Dashboard.route,
             label = "Dashboard",
             icon = Icons.Filled.Home
         ),
         BottomNavItem(
-            route = Routes.TRANSACTIONS,
+            route = Route.Transactions.route,
             label = "Transações",
             icon = Icons.Filled.List
         ),
         BottomNavItem(
-            route = Routes.REPORTS,
+            route = Route.Reports.route,
             label = "Relatórios",
             icon = Icons.Filled.BarChart
         ),
         BottomNavItem(
-            route = Routes.CATEGORIES,
+            route = Route.Categories.route,
             label = "Categorias",
             icon = Icons.Filled.Label
         )
