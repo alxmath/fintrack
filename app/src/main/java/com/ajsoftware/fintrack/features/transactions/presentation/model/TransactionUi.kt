@@ -7,6 +7,6 @@ data class TransactionUi(
     val description: String?,
     val amount: Double,
     val categoryName: String,
-    val type: TransactionType,
-    val date: Long
+    val categoryIcon: String?,
+    val categoryColor: String?
 )
