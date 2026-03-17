@@ -5,24 +5,32 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavDestination.Companion.hierarchy
 
 @Composable
 fun BottomBar(
     navController: NavHostController
 ) {
 
-    NavigationBar {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-        val currentRoute =
-            navController.currentBackStackEntryAsState().value?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
+
+    NavigationBar {
 
         BottomNavItems.items.forEach { item ->
 
+            val selected = currentDestination
+                ?.hierarchy
+                ?.any { it.route == item.route } == true
+
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = selected,
                 onClick = {
+
                     navController.navigate(item.route) {
 
                         popUpTo(navController.graph.startDestinationId) {
@@ -32,6 +40,7 @@ fun BottomBar(
                         launchSingleTop = true
                         restoreState = true
                     }
+
                 },
                 icon = {
                     Icon(
