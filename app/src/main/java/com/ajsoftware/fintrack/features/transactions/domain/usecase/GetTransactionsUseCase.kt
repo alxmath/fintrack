@@ -9,7 +9,6 @@ class GetTransactionsUseCase @Inject constructor(
     private val repository: TransactionRepository
 ) {
 
-    operator fun invoke(): Flow<List<Transaction>> {
-        return repository.getAll()
-    }
+    operator fun invoke() =
+        repository.getTransactionsWithCategory()
 }

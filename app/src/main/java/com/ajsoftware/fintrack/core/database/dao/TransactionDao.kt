@@ -5,10 +5,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.TransactionEntity
 import com.ajsoftware.fintrack.core.model.TransactionType
 import com.ajsoftware.fintrack.features.reports.domain.model.CategoryExpense
+import com.ajsoftware.fintrack.features.transactions.data.local.model.TransactionWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -61,4 +63,8 @@ interface TransactionDao {
         ORDER BY total DESC
     """)
     fun getExpensesByCategory(): Flow<List<CategoryExpense>>
+
+    @Transaction
+    @Query("SELECT * FROM transactions ORDER BY date DESC")
+    fun getTransactionsWithCategory(): Flow<List<TransactionWithCategory>>
 }

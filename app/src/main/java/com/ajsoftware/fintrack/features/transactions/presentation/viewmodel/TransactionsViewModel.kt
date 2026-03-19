@@ -2,6 +2,7 @@ package com.ajsoftware.fintrack.features.transactions.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ajsoftware.fintrack.features.transactions.data.mapper.toUi
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.AddTransactionUseCase
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.DeleteTransactionUseCase
@@ -27,24 +28,7 @@ class TransactionsViewModel @Inject constructor(
     val events = _events.asSharedFlow()
 
     val transactions = getTransactions()
-        .map { transactions ->
-
-            transactions.map { transaction ->
-
-                TransactionUi(
-                    id = transaction.id,
-                    description = transaction.description,
-                    amount = transaction.amount,
-                    categoryName = "Categoria", // temporário
-                    categoryIcon = null,
-                    categoryColor = null,
-                    type = transaction.type,
-                    date = transaction.date
-                )
-
-            }
-
-        }
+        .map { list -> list.map { it.toUi() } }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),

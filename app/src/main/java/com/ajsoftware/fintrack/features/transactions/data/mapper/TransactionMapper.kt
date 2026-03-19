@@ -1,7 +1,9 @@
 package com.ajsoftware.fintrack.features.transactions.data.mapper
 
 import com.ajsoftware.fintrack.core.database.entity.TransactionEntity
+import com.ajsoftware.fintrack.features.transactions.data.local.model.TransactionWithCategory
 import com.ajsoftware.fintrack.features.transactions.domain.model.Transaction
+import com.ajsoftware.fintrack.features.transactions.presentation.model.TransactionUi
 
 fun TransactionEntity.toDomain(): Transaction {
     return Transaction(
@@ -23,4 +25,19 @@ fun Transaction.toEntity(): TransactionEntity {
         type = type,
         date = date,
     )
+}
+
+fun TransactionWithCategory.toUi(): TransactionUi {
+
+    return TransactionUi(
+        id = transaction.id,
+        description = transaction.description,
+        amount = transaction.amount,
+        categoryName = category.name,
+        categoryIcon = category.icon,
+        categoryColor = category.color,
+        type = transaction.type,
+        date = transaction.date
+    )
+
 }
