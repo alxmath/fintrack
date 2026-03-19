@@ -3,14 +3,12 @@ package com.ajsoftware.fintrack.features.reports.presentation.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpenseUi
-import androidx.core.graphics.toColorInt
 
 @Composable
 fun CategoryExpensePieChart(
@@ -23,9 +21,19 @@ fun CategoryExpensePieChart(
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-            .padding(horizontal = 24.dp)
+            .aspectRatio(1f) // garante área quadrada
     ) {
+
+        if (total == 0.0) return@Canvas
+
+        val diameter = size.minDimension
+
+        val topLeft = Offset(
+            (size.width - diameter) / 2f,
+            (size.height - diameter) / 2f
+        )
+
+        val arcSize = Size(diameter, diameter)
 
         var startAngle = -90f
 
@@ -34,7 +42,7 @@ fun CategoryExpensePieChart(
             val sweepAngle = (item.amount / total * 360f).toFloat()
 
             val color = try {
-                Color((item.color ?: "#2196F3").toColorInt())
+                Color(android.graphics.Color.parseColor(item.color ?: "#2196F3"))
             } catch (e: Exception) {
                 Color(0xFF2196F3)
             }
@@ -43,7 +51,9 @@ fun CategoryExpensePieChart(
                 color = color,
                 startAngle = startAngle,
                 sweepAngle = sweepAngle,
-                useCenter = true
+                useCenter = true,
+                topLeft = topLeft,
+                size = arcSize
             )
 
             startAngle += sweepAngle
