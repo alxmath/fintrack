@@ -55,13 +55,17 @@ interface TransactionDao {
     fun getTotal(): Flow<Double?>
 
     @Query("""
-        SELECT c.name as categoryName, SUM(t.amount) as total
-        FROM transactions t
-        JOIN categories c ON c.id = t.categoryId
-        WHERE t.type = 'EXPENSE'
-        GROUP BY t.categoryId
-        ORDER BY total DESC
-    """)
+            SELECT 
+                c.name AS categoryName,
+                SUM(t.amount) AS total,
+                c.color AS color,
+                c.icon AS icon
+            FROM transactions t
+            INNER JOIN categories c ON t.categoryId = c.id
+            WHERE t.type = 'EXPENSE'
+            GROUP BY t.categoryId
+            ORDER BY total DESC
+        """)
     fun getExpensesByCategory(): Flow<List<CategoryExpense>>
 
     @Transaction

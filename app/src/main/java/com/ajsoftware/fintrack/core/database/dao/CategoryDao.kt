@@ -31,17 +31,4 @@ interface CategoryDao {
 
     @Query("SELECT COUNT(*) FROM categories")
     suspend fun count(): Int
-
-    @Query("""
-        SELECT 
-            c.name AS categoryName,
-            SUM(t.amount) AS total,
-            c.color AS color,
-            c.icon AS icon
-        FROM transactions t
-        INNER JOIN categories c ON t.categoryId = c.id
-        WHERE t.type = 'EXPENSE'
-        GROUP BY t.categoryId
-    """)
-    fun getExpensesByCategory(): Flow<List<CategoryExpense>>
 }
