@@ -2,6 +2,7 @@ package com.ajsoftware.fintrack.features.transactions.data.repository
 
 import com.ajsoftware.fintrack.core.database.dao.TransactionDao
 import com.ajsoftware.fintrack.core.model.TransactionType
+import com.ajsoftware.fintrack.features.reports.domain.model.CategoryExpense
 import com.ajsoftware.fintrack.features.transactions.data.local.model.TransactionWithCategory
 import com.ajsoftware.fintrack.features.transactions.data.mapper.toDomain
 import com.ajsoftware.fintrack.features.transactions.data.mapper.toEntity
@@ -41,7 +42,7 @@ class TransactionRepositoryImpl @Inject constructor(
         return transactionDao.getTotalByType(type)
     }
 
-    override fun getTransactionsWithCategory(): Flow<List<TransactionWithCategory>> {
-        return transactionDao.getTransactionsWithCategory()
+    override fun getExpensesByCategory(startDate: Long): Flow<List<CategoryExpense>> {
+        return transactionDao.getExpensesByCategory(startDate)
     }
 }
