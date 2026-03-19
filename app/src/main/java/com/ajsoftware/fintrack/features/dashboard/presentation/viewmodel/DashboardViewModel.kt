@@ -3,6 +3,7 @@ package com.ajsoftware.fintrack.features.dashboard.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajsoftware.fintrack.features.dashboard.model.FinancialSummaryUi
+import com.ajsoftware.fintrack.features.transactions.data.mapper.toUi
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.GetFinancialSummaryUseCase
 import com.ajsoftware.fintrack.features.transactions.domain.usecase.GetTransactionsUseCase
 import com.ajsoftware.fintrack.features.transactions.presentation.mapper.toUi
@@ -22,24 +23,7 @@ class DashboardViewModel @Inject constructor(
 ) : ViewModel() {
 
     val transactions = getTransactionsUseCase()
-        .map { transactions ->
-
-            transactions.map { transaction ->
-
-                TransactionUi(
-                    id = transaction.id,
-                    description = transaction.description,
-                    amount = transaction.amount,
-                    categoryName = "Categoria", // temporário
-                    categoryIcon = null,
-                    categoryColor = null,
-                    type = transaction.type,
-                    date = transaction.date
-                )
-
-            }
-
-        }
+        .map { list -> list.map { it.toUi() } }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
