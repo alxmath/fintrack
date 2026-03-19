@@ -1,8 +1,10 @@
 package com.ajsoftware.fintrack.features.reports.presentation.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +23,8 @@ fun CategoryExpensePieChart(
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(220.dp)
+            .aspectRatio(1f)
+            .padding(horizontal = 24.dp)
     ) {
 
         var startAngle = -90f
