@@ -6,7 +6,7 @@ import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpen
 fun CategoryExpense.toUi(): CategoryExpenseUi {
     return CategoryExpenseUi(
         categoryName = categoryName,
-        amount = totalAmount,
+        amount = total,
         color = color
     )
 }

@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.ajsoftware.fintrack.core.database.entity.CategoryEntity
 import com.ajsoftware.fintrack.core.model.CategoryType
+import com.ajsoftware.fintrack.features.reports.domain.model.CategoryExpense
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -30,4 +31,17 @@ interface CategoryDao {
 
     @Query("SELECT COUNT(*) FROM categories")
     suspend fun count(): Int
+
+    @Query("""
+        SELECT 
+            c.name AS categoryName,
+            SUM(t.amount) AS total,
+            c.color AS color,
+            c.icon AS icon
+        FROM transactions t
+        INNER JOIN categories c ON t.categoryId = c.id
+        WHERE t.type = 'EXPENSE'
+        GROUP BY t.categoryId
+    """)
+    fun getExpensesByCategory(): Flow<List<CategoryExpense>>
 }
