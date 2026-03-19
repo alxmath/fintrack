@@ -55,18 +55,19 @@ interface TransactionDao {
     fun getTotal(): Flow<Double?>
 
     @Query("""
-            SELECT 
-                c.name AS categoryName,
-                SUM(t.amount) AS total,
-                c.color AS color,
-                c.icon AS icon
-            FROM transactions t
-            INNER JOIN categories c ON t.categoryId = c.id
-            WHERE t.type = 'EXPENSE'
-            GROUP BY t.categoryId
-            ORDER BY total DESC
-        """)
-    fun getExpensesByCategory(): Flow<List<CategoryExpense>>
+        SELECT 
+            c.name AS categoryName,
+            SUM(t.amount) AS total,
+            c.color AS color,
+            c.icon AS icon
+        FROM transactions t
+        INNER JOIN categories c ON t.categoryId = c.id
+        WHERE t.type = 'EXPENSE'
+          AND t.date >= :startDate
+        GROUP BY t.categoryId
+        ORDER BY total DESC
+    """)
+    fun getExpensesByCategory(startDate: Long): Flow<List<CategoryExpense>>
 
     @Transaction
     @Query("SELECT * FROM transactions ORDER BY date DESC")
