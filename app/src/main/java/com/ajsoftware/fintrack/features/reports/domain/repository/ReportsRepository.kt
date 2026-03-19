@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReportsRepository {
 
-    fun getExpensesByCategory(): Flow<List<CategoryExpense>>
+    fun getExpensesByCategory(startDate: Long): Flow<List<CategoryExpense>>
 }
