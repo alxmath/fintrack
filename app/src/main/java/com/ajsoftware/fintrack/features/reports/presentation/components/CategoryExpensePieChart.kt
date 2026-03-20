@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpenseUi
+import androidx.core.graphics.toColorInt
 
 @Composable
 fun CategoryExpensePieChart(
@@ -57,24 +58,17 @@ fun CategoryExpensePieChart(
 
         data.forEach { item ->
 
-            val sweepAngle = (item.amount / total * 360f).toFloat()
-
-            val color = try {
-                Color(android.graphics.Color.parseColor(item.color ?: "#2196F3"))
-            } catch (e: Exception) {
-                Color(0xFF2196F3)
-            }
+            val fullSweep = (item.amount.toFloat() / total.toFloat()) * 360f
+            val animatedSweep = fullSweep * animatedProgress.value
 
             drawArc(
-                color = color,
+                color = Color(android.graphics.Color.parseColor(item.color ?: "#CCCCCC")),
                 startAngle = startAngle,
-                sweepAngle = sweepAngle,
-                useCenter = true,
-                topLeft = topLeft,
-                size = arcSize
+                sweepAngle = animatedSweep,
+                useCenter = true
             )
 
-            startAngle += sweepAngle
+            startAngle += fullSweep // ⚠️ usa o valor REAL, não o animado
         }
     }
 }
