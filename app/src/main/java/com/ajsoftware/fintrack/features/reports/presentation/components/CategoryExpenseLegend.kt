@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ajsoftware.fintrack.core.utils.formatCurrency
 import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpenseUi
+import androidx.core.graphics.toColorInt
 
 @Composable
 fun CategoryExpenseLegend(
@@ -31,7 +33,7 @@ fun CategoryExpenseLegend(
             } else 0
 
             val color = try {
-                Color(android.graphics.Color.parseColor(item.color ?: "#2196F3"))
+                Color((item.color ?: "#2196F3").toColorInt())
             } catch (e: Exception) {
                 Color(0xFF2196F3)
             }
@@ -57,13 +59,17 @@ fun CategoryExpenseLegend(
 
                     Text(
                         text = item.categoryName,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
 
                     Text(
                         text = formatCurrency(item.amount),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
