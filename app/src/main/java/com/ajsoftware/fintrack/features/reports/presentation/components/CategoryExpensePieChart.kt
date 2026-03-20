@@ -27,7 +27,11 @@ fun CategoryExpensePieChart(
     val animatedProgress = remember { Animatable(0f) }
 
     LaunchedEffect(data) {
+
+        if (data.isEmpty() || total <= 0.0) return@LaunchedEffect
+
         animatedProgress.snapTo(0f)
+
         animatedProgress.animateTo(
             targetValue = 1f,
             animationSpec = tween(
@@ -40,10 +44,11 @@ fun CategoryExpensePieChart(
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f) // garante área quadrada
+            .aspectRatio(1f)
     ) {
 
-        if (total == 0.0) return@Canvas
+        // 🔒 proteção crítica
+        if (total <= 0.0) return@Canvas
 
         val diameter = size.minDimension
 
@@ -58,17 +63,31 @@ fun CategoryExpensePieChart(
 
         data.forEach { item ->
 
-            val fullSweep = (item.amount.toFloat() / total.toFloat()) * 360f
+            val proportion = item.amount / total
+
+            // 🔒 evita NaN / negativos
+            if (proportion <= 0.0 || proportion.isNaN()) return@forEach
+
+            val fullSweep = (proportion * 360.0).toFloat()
             val animatedSweep = fullSweep * animatedProgress.value
 
+            // 🔒 proteção de cor
+            val color = try {
+                Color((item.color ?: "#CCCCCC").toColorInt())
+            } catch (e: Exception) {
+                Color.Gray
+            }
+
             drawArc(
-                color = Color(android.graphics.Color.parseColor(item.color ?: "#CCCCCC")),
+                color = color,
                 startAngle = startAngle,
                 sweepAngle = animatedSweep,
-                useCenter = true
+                useCenter = true,
+                topLeft = topLeft,
+                size = arcSize
             )
 
-            startAngle += fullSweep // ⚠️ usa o valor REAL, não o animado
+            startAngle += fullSweep
         }
     }
 }
