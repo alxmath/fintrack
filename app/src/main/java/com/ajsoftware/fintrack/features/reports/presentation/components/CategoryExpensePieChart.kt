@@ -1,9 +1,14 @@
 package com.ajsoftware.fintrack.features.reports.presentation.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -17,6 +22,19 @@ fun CategoryExpensePieChart(
 ) {
 
     val total = data.sumOf { it.amount }
+
+    val animatedProgress = remember { Animatable(0f) }
+
+    LaunchedEffect(data) {
+        animatedProgress.snapTo(0f)
+        animatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(
+                durationMillis = 800,
+                easing = FastOutSlowInEasing
+            )
+        )
+    }
 
     Canvas(
         modifier = modifier
