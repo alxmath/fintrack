@@ -16,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +30,7 @@ fun ReportsScreen(
 ) {
 
     val data by viewModel.expensesByCategory.collectAsState()
+    val selectedCategory = remember { mutableStateOf<String?>(null) }
 
     Scaffold { padding ->
 
@@ -75,7 +78,12 @@ fun ReportsScreen(
                     }
                 }
 
-                ExpensesByCategoryCard(data)
+                ExpensesByCategoryCard(data,
+                    selectedCategory = selectedCategory.value,
+                    onCategoryClick = { clicked ->
+                        selectedCategory.value =
+                            if (selectedCategory.value == clicked) null else clicked
+                    })
             }
         }
     }

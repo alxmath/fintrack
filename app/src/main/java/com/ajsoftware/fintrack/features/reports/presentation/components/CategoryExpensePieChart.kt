@@ -15,10 +15,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpenseUi
 import androidx.core.graphics.toColorInt
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun CategoryExpensePieChart(
     data: List<CategoryExpenseUi>,
+    selectedCategory: String?,
     modifier: Modifier = Modifier
 ) {
 
@@ -63,6 +66,11 @@ fun CategoryExpensePieChart(
 
         data.forEach { item ->
 
+            val isSelected = item.categoryName == selectedCategory
+
+            val alpha =
+                if (selectedCategory == null || isSelected) 1f else 0.3f
+
             val proportion = item.amount / total
 
             // 🔒 evita NaN / negativos
@@ -78,12 +86,21 @@ fun CategoryExpensePieChart(
                 Color.Gray
             }
 
+            val offset = if (isSelected) 12f else 0f
+
+            val angleRad = Math.toRadians((startAngle + fullSweep / 2).toDouble())
+
+            val dx = (cos(angleRad) * offset).toFloat()
+            val dy = (sin(angleRad) * offset).toFloat()
+
+            val adjustedTopLeft = topLeft + Offset(dx, dy)
+
             drawArc(
-                color = color,
+                color = color.copy(alpha = alpha),
                 startAngle = startAngle,
                 sweepAngle = animatedSweep,
                 useCenter = true,
-                topLeft = topLeft,
+                topLeft = adjustedTopLeft,
                 size = arcSize
             )
 

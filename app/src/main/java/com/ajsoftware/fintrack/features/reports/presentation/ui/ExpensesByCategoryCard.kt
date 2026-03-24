@@ -19,8 +19,10 @@ import com.ajsoftware.fintrack.features.reports.presentation.model.CategoryExpen
 
 @Composable
 fun ExpensesByCategoryCard(
-    data: List<CategoryExpenseUi>
-) {
+    data: List<CategoryExpenseUi>,
+    selectedCategory: String?,
+    onCategoryClick: (String) -> Unit
+){
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -40,7 +42,8 @@ fun ExpensesByCategoryCard(
 
             CategoryExpensePieChart(
                 data = data,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                selectedCategory = selectedCategory
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -48,7 +51,9 @@ fun ExpensesByCategoryCard(
             CategoryExpenseLegend(data = data,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 180.dp))
+                    .heightIn(max = 180.dp),
+                selectedCategory = selectedCategory,
+                onCategoryClick = onCategoryClick)
         }
     }
 }

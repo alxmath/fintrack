@@ -1,6 +1,7 @@
 package com.ajsoftware.fintrack.features.reports.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -20,7 +22,9 @@ import androidx.core.graphics.toColorInt
 @Composable
 fun CategoryExpenseLegend(
     data: List<CategoryExpenseUi>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedCategory: String?,
+    onCategoryClick: (String) -> Unit
 ) {
 
     val total = data.sumOf { it.amount }
@@ -44,8 +48,18 @@ fun CategoryExpenseLegend(
                 Color(0xFF2196F3)
             }
 
+            val isSelected = item.categoryName == selectedCategory
+
+            val alpha =
+                if (selectedCategory == null || isSelected) 1f else 0.4f
+
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onCategoryClick(item.categoryName)
+                    }
+                    .alpha(alpha),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
