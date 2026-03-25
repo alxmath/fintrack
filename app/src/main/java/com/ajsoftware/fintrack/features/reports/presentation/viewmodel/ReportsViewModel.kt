@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -25,23 +26,10 @@ class ReportsViewModel @Inject constructor(
     private val getExpensesByCategoryUseCase: GetExpensesByCategoryUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ReportsUiState())
-    val uiState: StateFlow<ReportsUiState> = _uiState.asStateFlow()
-
     private val selectedPeriod = MutableStateFlow(ReportPeriod.LAST_30_DAYS)
     val period: StateFlow<ReportPeriod> = selectedPeriod.asStateFlow()
 
-
-
-    init {
-        viewModelScope.launch {
-            expensesByCategory.collect { list ->
-                _uiState.update {
-                    it.copy(categories = list)
-                }
-            }
-        }
-    }
+    private val _selectedCategory = MutableStateFlow<String?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val expensesByCategory: StateFlow<List<CategoryExpenseUi>> =
@@ -60,14 +48,28 @@ class ReportsViewModel @Inject constructor(
                 emptyList()
             )
 
+    val uiState: StateFlow<ReportsUiState> =
+        combine(
+            expensesByCategory,
+            _selectedCategory
+        ) { categories, selectedCategory ->
+
+            ReportsUiState(
+                categories = categories,
+                selectedCategory = selectedCategory
+            )
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            ReportsUiState()
+        )
+
     fun selectPeriod(period: ReportPeriod) {
         selectedPeriod.value = period
     }
 
     fun selectCategory(category: String?) {
-        _uiState.update {
-            it.copy(selectedCategory = category)
-        }
+        _selectedCategory.value = category
     }
 
     private fun calculateStartDate(period: ReportPeriod): Long {
