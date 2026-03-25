@@ -26,8 +26,8 @@ fun ReportsScreen(
     viewModel: ReportsViewModel = hiltViewModel()
 ) {
 
-    val data by viewModel.expensesByCategory.collectAsState()
-    val selectedCategory by viewModel.selectedCategory.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val selectedPeriod by viewModel.period.collectAsState()
 
     Scaffold { padding ->
 
@@ -45,7 +45,7 @@ fun ReportsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (data.isEmpty()) {
+            if (uiState.categories.isEmpty()) {
 
                 EmptyState()
 
@@ -76,12 +76,12 @@ fun ReportsScreen(
                 }
 
                 ExpensesByCategoryCard(
-                    data = data,
-                    selectedCategory = selectedCategory,
+                    data = uiState.categories,
+                    selectedCategory = uiState.selectedCategory,
                     onCategoryClick = { clicked ->
 
                         val newValue =
-                            if (selectedCategory == clicked) null else clicked
+                            if (uiState.selectedCategory == clicked) null else clicked
 
                         viewModel.selectCategory(newValue)
                     }
